@@ -7,6 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: bedc123edea250b42beed00675d23a77, type: 3}
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: e5ec9d8300066f34b95c4c8e5ab29228, type: 3}
     - target: {fileID: 819637410478794604, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -93,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6457799237188613437, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
       propertyPath: m_Name
-      value: Invader_03 Variant
+      value: Invader_03
       objectReference: {fileID: 0}
     - target: {fileID: 8374062441966724426, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
       propertyPath: m_Size.x

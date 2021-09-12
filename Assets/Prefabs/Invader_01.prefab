@@ -7,6 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: bedbde60d1389394195713cae9caad80, type: 3}
+    - target: {fileID: 81336305768270323, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
+      propertyPath: animationSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: e19edaf42d0c36444a7d8bd1a21b91f4, type: 3}
     - target: {fileID: 819637410478794604, guid: b3504eb7fb9e4b54380fb5cc486badd2, type: 3}
       propertyPath: m_RootOrder
       value: 0

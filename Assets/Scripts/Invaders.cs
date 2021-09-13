@@ -7,7 +7,14 @@ public class Invaders : MonoBehaviour
     public Invader[] prefabs;
     public int rows = 5;
     public int columns = 11;
-    public float speed = 2.0f;
+    public AnimationCurve speed;
+    public int amountKilled { get; private set; }
+    public int totalInvaders => this.rows * this.columns;
+    public float pocentKilled => (float) this.amountKilled / (float) this.totalInvaders;
+    public float missileAttackRate = 1.0f;
+    public int amountAlive => this.totalInvaders - this.amountKilled;
+    public Projectile missilePrefab;
+
     private Vector3 _direction = Vector2.right;
 
     private void Awake()
@@ -21,6 +28,7 @@ public class Invaders : MonoBehaviour
             for(int col = 0; col < this.columns; col++)
             {
                 Invader invader = Instantiate(this.prefabs[row], this.transform);
+                invader.killed += InvaderKilled;
                 Vector3 position = rowPosition;
                 position.x += col * 2.0f;
                 invader.transform.localPosition = position;
@@ -28,9 +36,14 @@ public class Invaders : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        InvokeRepeating(nameof(MissileAttack), this.missileAttackRate, this.missileAttackRate);
+    }
+
     private void Update()
     {
-        this.transform.position += _direction * this.speed * Time.deltaTime;
+        this.transform.position += _direction * this.speed.Evaluate(this.pocentKilled) * Time.deltaTime;
 
         Vector3 leftEdge = Camera.main.ViewportToWorldPoint(Vector3.zero);
         Vector3 rightEdge = Camera.main.ViewportToWorldPoint(Vector3.right);
@@ -53,11 +66,34 @@ public class Invaders : MonoBehaviour
         }
     }
 
+    private void MissileAttack()
+    {
+        foreach (Transform invader in this.transform)
+        {
+            //dead invader
+            if (!invader.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+            //only one laser come from invaders at the time
+            if(Random.value < (1.0f/(float)this.amountAlive))
+            {
+                Instantiate(this.missilePrefab, invader.position, Quaternion.identity);
+                break;
+            }
+        }
+    }
+
     private void AdvanceRow()
     {
         _direction.x *= -1.0f;
         Vector3 position = this.transform.position;
         position.y -= 1.0f;
         this.transform.position = position;
+    }
+
+    private void InvaderKilled()
+    {
+        this.amountKilled++;
     }
 }

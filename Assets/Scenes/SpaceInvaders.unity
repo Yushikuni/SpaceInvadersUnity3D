@@ -284,7 +284,41 @@ MonoBehaviour:
   - {fileID: 1062401668958504338, guid: 4e087e2d3ee393f40b61e3be2f1ad655, type: 3}
   rows: 5
   columns: 11
-  speed: 1
+  speed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.104836605
+      value: 0.55052596
+      inSlope: 2.4594073
+      outSlope: 2.4594073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.08765935
+    - serializedVersion: 3
+      time: 1
+      value: 8
+      inSlope: 19.445957
+      outSlope: 19.445957
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04305509
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  missileAttackRate: 1
+  missilePrefab: {fileID: 1029194521761601175, guid: 0cb7f1b990e43d143b79d2821eb3e9b0, type: 3}
 --- !u!4 &510480737
 Transform:
   m_ObjectHideFlags: 0

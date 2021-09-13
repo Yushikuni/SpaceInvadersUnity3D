@@ -20,7 +20,11 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        this.destroyed.Invoke();
+        if(this.destroyed != null)
+        {
+            this.destroyed.Invoke();
+        }
+        
         Destroy(this.gameObject);
     }
 }

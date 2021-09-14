@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Invaders : MonoBehaviour
 {
@@ -95,5 +96,11 @@ public class Invaders : MonoBehaviour
     private void InvaderKilled()
     {
         this.amountKilled++;
+        if(this.amountKilled >= this.totalInvaders)
+        {
+            //reset hry nebo pridani levelu
+            //v tomto pripade jen reset
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

@@ -5,22 +5,32 @@ using UnityEngine.SceneManagement;
 
 public class Invaders : MonoBehaviour
 {
-    public Invader[] prefabs;
+
+    [Header("Invaders")]
+    public Invader[] prefabs = new Invader[5];
+    public AnimationCurve speed = new AnimationCurve();
+    public Vector3 direction { get; private set; } = Vector3.right;
+    public Vector3 initialPosition { get; private set; }
+    public System.Action<Invader> killed;
+
+    public int amountKilled { get; private set; }
+    public int amountAlive => this.TotalAmount - this.amountKilled;
+    public int TotalAmount => this.rows * this.columns;
+    public float pocentKilled => (float)this.amountKilled / (float)this.TotalAmount;
+
+    [Header("Grid")]
     public int rows = 5;
     public int columns = 11;
-    public AnimationCurve speed;
-    public int amountKilled { get; private set; }
-    public int totalInvaders => this.rows * this.columns;
-    public float pocentKilled => (float) this.amountKilled / (float) this.totalInvaders;
-    public float missileAttackRate = 1.0f;
-    public int amountAlive => this.totalInvaders - this.amountKilled;
-    public Projectile missilePrefab;
 
-    private Vector3 _direction = Vector2.right;
+    [Header("Missiles")]
+    public Projectile missilePrefab;
+    public float missileSpawnRate = 1.0f;
 
     private void Awake()
     {
-        for(int row = 0; row < this.rows; row++)
+        this.initialPosition = this.transform.position;
+
+        for (int row = 0; row < this.rows; row++)
         {
             float width = 2.0f * (this.columns - 1);
             float height = 2.0f * (this.rows - 1);
@@ -29,7 +39,7 @@ public class Invaders : MonoBehaviour
             for(int col = 0; col < this.columns; col++)
             {
                 Invader invader = Instantiate(this.prefabs[row], this.transform);
-                invader.killed += InvaderKilled;
+                invader.killed += OnInvaderKilled;
                 Vector3 position = rowPosition;
                 position.x += col * 2.0f;
                 invader.transform.localPosition = position;
@@ -39,12 +49,12 @@ public class Invaders : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(MissileAttack), this.missileAttackRate, this.missileAttackRate);
+        InvokeRepeating(nameof(MissileAttack), this.missileSpawnRate, this.missileSpawnRate);
     }
 
     private void Update()
     {
-        this.transform.position += _direction * this.speed.Evaluate(this.pocentKilled) * Time.deltaTime;
+        this.transform.position += direction * this.speed.Evaluate(this.pocentKilled) * Time.deltaTime;
 
         Vector3 leftEdge = Camera.main.ViewportToWorldPoint(Vector3.zero);
         Vector3 rightEdge = Camera.main.ViewportToWorldPoint(Vector3.right);
@@ -56,11 +66,11 @@ public class Invaders : MonoBehaviour
                 continue;
             }
 
-            if(_direction == Vector3.right && invader.position.x >= (rightEdge.x - 1.0f))
+            if(direction == Vector3.right && invader.position.x >= (rightEdge.x - 1.0f))
             {
                 AdvanceRow();
             }
-            else if(_direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0))
+            else if(direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0))
             {
                 AdvanceRow();
             }
@@ -87,20 +97,28 @@ public class Invaders : MonoBehaviour
 
     private void AdvanceRow()
     {
-        _direction.x *= -1.0f;
+        this.direction = new Vector3(-this.direction.x, 0.0f, 0.0f); //flipuje se smìrem jakým se ubírají invaders
         Vector3 position = this.transform.position;
         position.y -= 1.0f;
         this.transform.position = position;
     }
 
-    private void InvaderKilled()
+    private void OnInvaderKilled(Invader invader)
     {
+        invader.gameObject.SetActive(false);
+
         this.amountKilled++;
-        if(this.amountKilled >= this.totalInvaders)
+        this.killed(invader);
+    }
+
+    public void ResetInvaders()
+    {
+        this.amountKilled = 0;
+        this.direction = Vector3.right;
+        this.transform.position = this.initialPosition;
+        foreach(Transform invader in this.transform)
         {
-            //reset hry nebo pridani levelu
-            //v tomto pripade jen reset
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            invader.gameObject.SetActive(true);
         }
     }
 }

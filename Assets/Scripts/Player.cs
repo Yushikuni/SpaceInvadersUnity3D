@@ -6,10 +6,9 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     public Projectile laserPrefab;
-
     public float speed = 5.0f;
-
-    private bool _laserActive;
+    public System.Action killed;
+    public bool _laserActive { get; private set; }
 
     // Update is called once per frame
     private void Update()
@@ -51,7 +50,11 @@ public class Player : MonoBehaviour
         {
             //reset hry nebo pridani levelu
             //v tomto pripade jen reset
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if(this.killed != null)
+            {
+                this.killed.Invoke();
+            }
         }
     }
 }
